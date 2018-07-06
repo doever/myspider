@@ -1,0 +1,72 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import time
+
+import pymysql
+import requests
+from bs4 import BeautifulSoup
+
+
+def get_content(soup,tagname,class_name,*args,getattr=False):
+    li=[]
+    tag=soup.find_all(tagname,class_name)
+    if getattr:
+        for info in tag:
+            li.append(info.get(args[0]))
+    else:
+        for info in tag:
+            if info.string:
+                li.append(info.string.strip())
+            else:
+                li.append('404-not-found')
+    return li
+
+
+def save_db(host,user,password,db,datas):
+    conn = pymysql.connect(host=host,user=user,password=password,db=db,charset='utf8')
+    cursor = conn.cursor()
+    try:
+        for i in range(len(datas[0])):
+            print('%s正在努力插入中.....' % datas[2][i])
+            # cursor.execute('insert into mytest values(?,?)',(i,data,))
+            cursor.execute("insert into tieba(photo,content,author,pubtime,platform) values('%s','%s','%s','%s','%s')" % (datas[0][i],datas[1][i],datas[2][i],datas[3][i],datas[4][i]))
+            conn.commit()
+    except Exception as err:
+        print('error:'+ str(err))
+        conn.rollback()
+    cursor.close()
+    conn.close()
+
+
+def spider_html(startpage,endpage):
+    header={
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
+    }
+    url_head = 'http://bbs.xiaomi.cn/d-'
+    photos, content, author, pub_time,platform=[], [], [], [], []
+    for i in range(startpage,endpage):
+        print('爬到第%s页啦' % i)
+        dist_url =url_head+str(i)
+        res = requests.get(dist_url,headers=header)
+        soup=BeautifulSoup(res.text)
+        photos += get_content(soup,'img','user_head','data-original',getattr=True)
+        content += get_content(soup,'a','title_name')
+        author += get_content(soup,'a','user_name')
+        pub_time += get_content(soup,'span','time')
+        platform += get_content(soup,'span','comefrom')
+        time.sleep(2)
+    li=[photos,content,author,pub_time,platform]
+    return li
+
+
+if __name__ == '__main__':
+    res = spider_html(1,3)
+    save_db('127.0.0.1','root','cl','test',res)
+
+
+
+
