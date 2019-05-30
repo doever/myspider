@@ -79,10 +79,36 @@
     </div>
     <div>
         <button id="end-button">签退</button>
+        <button id="start_jb">加班</button>
     </div>
 </body>
 <script>
 $(function(){
+    //初始化按钮操作
+    $.ajax({
+        type:"POST",
+        url:"/init_button",
+        data:{"username":username},
+        datatype:"json",
+        success:function(result){
+            // 初始化按钮
+        },
+        error:function(error){
+
+        }
+    })
+
+    //键盘事件
+    $("body").keypress(function(enevt){
+        var e = event || window.event;
+         if(e && e.keyCode==13){ 
+               alert("you pressed enter");
+            }else{
+               alert(e.keyCode);
+            }
+    });
+
+    签退事件
     $("#end-button").click(function (){ 
         $("#work-dec").show();
     });
@@ -103,13 +129,53 @@ $(function(){
                     $("#work-dec").hide();
                     layer.alert("提交成功");
                 },
-                fail:function(result){
-                    layer.alert("提交失败，请联系管理员");
+                error:function(error){
+                    layer.alert(error["message"]);
                 }
             })
         }
   
     });
+
+    // 加班事件
+    $("#start_jb").click(function(){
+        var myDate = new Date();
+        var currentHour = myDate.getHours();
+        if (currentHour<18){
+            alert("未到加班时间");    
+        }else{
+            $.ajax({
+                type:"POST",
+                url:'/start_overtime',
+                data:{"username":username},
+                datatype:"json",
+                success:funtion(result){
+                    layer.alert("加班成功");
+                    // 加班按钮置未失效状态
+                },
+                error:function(error){
+                    layer.alert(error["message"]);
+                }
+            })
+        }    
+    });
+
+    // 结束加班
+    $("#end_jb").click(function(){
+        $.ajax({
+            type:"POST",
+            url:'/end_overtime',
+            data:{"username":username},
+            datatype:"json",
+            success:funtion(result){
+                layer.alert(result["message"]);
+            },
+            error:function(error){
+                layer.alert(error["message"]);
+            }
+        })
+    })
 })
 </script>
 </html>
+
