@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+<style>
+#mask{
+     background: #000;
+     opacity: 0.65;
+     width: 100%;
+     position: absolute;
+     left: 0;
+     top: 0;
+     bottom:0;
+     z-index: 1000;
+}
+#vide{
+    position: absolute;
+    width:500px;
+    height:300px;
+    z-index:1001;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+
+.comment{
+    margin-top: 10px;
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    outline: none;
+    resize: none;
+    border-radius: 5px;
+    font-size: 14px;
+    height: 120px;
+    line-height: 26px;
+    overflow: hidden;
+}
+.common-btn{
+    background-color: #5c87d9;
+    border: none;
+    color: #fff;
+    padding: 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    width:80px
+}
+#submit-btn{
+    float: left;
+    margin-left: 100px;
+}
+#close-btn{
+    float: right;
+    margin-right: 100px;
+}
+.comment-group{
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+}
+
+</style> 
+<script type="text/javascript" src="js/jquery-3.1.1.min.js" ></script>
+</head>
+<body>
+    <div id="work-dec" hidden>
+        <div class="mask" id="mask"></div>
+        <div class="vide" id="vide">
+            <div class="comment-group">
+                <div class="title">工作内容填写</div>
+                <textarea id="work-text" name="comment" class="comment nologin-comment" placeholder="例如：项目需求分析..."></textarea>
+                <div style="overflow:hidden;margin-top:15px">
+                    <button class="common-btn" id="submit-btn" data-pk="10">提交</button>
+                    <button class="common-btn" id="close-btn" data-pk="10">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button id="end-button">签退</button>
+    </div>
+</body>
+<script>
+$(function(){
+    $("#end-button").click(function (){ 
+        $("#work-dec").show();
+    });
+    $("#close-btn").click(function(){
+        $("#work-dec").hide();
+    });
+    $("#submit-btn").click(function(){
+        var oText=$("#work-text").val();
+        if(!oText){
+            alert("未输入任何工作内容");
+        }else{
+            $.ajax({
+                type:"POST",
+                url:'/add_workdec',
+                data:{"username":username,"work_dec":oText},
+                datatype:"json",
+                success:funtion(result){
+                    $("#work-dec").hide();
+                    layer.alert("提交成功");
+                },
+                fail:function(result){
+                    layer.alert("提交失败，请联系管理员");
+                }
+            })
+        }
+  
+    });
+})
+</script>
+</html>
