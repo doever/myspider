@@ -1,3 +1,23 @@
+def register(request):
+	if request.method == 'GET':
+		return render("register.html")
+	else:
+		username = request.user_input.get("username")
+		password = request.user_input.get("password")
+		re_password = request.user_input.get("re_password")
+		name = request.user_input.get("name")
+		user_info = db.select(f"select * from user_info where username='{username}'")
+		if user_info:
+			return restfu.params_error("用户已存在")
+		else:
+			 if password != re_password:
+				return restfu.params_error("两次密码输入不一致")
+			else:
+				db.insert(f"insert into user_info values('{username}','{password}','1','{name}')")
+				return restful.ok()
+				
+
+
 def init_buton(request):
 	if request.method == 'GET':
 		return restful.params_error("请求方法错误")
