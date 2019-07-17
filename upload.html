@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            background-color: #DDD;
+        }
+        .head{
+            width: 100%;
+            height: 55px;
+            background-color: skyblue;
+        }
+        .menu{
+            position: absolute;
+            width: 230px;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background-color: #222;
+            margin-top: 55px;
+        }
+        .content-wrapper{
+            margin-left: 250px;
+        }
+        .head-title{
+            margin-top: 25px;
+            width: 98%;
+            height: 55px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+        .search-wrapper{
+            margin-top: 15px;
+            background-color: #fff;
+            overflow: hidden;
+            height: 75px;
+            width: 98%;
+            border-radius: 5px;
+        }
+        .form-control{
+            float: left;
+        }
+        .main-wrapper{
+
+        }
+        .main-wrapper ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            margin-top: 15px;
+        }
+        .item-box{
+            float: left;
+            width: 220px;
+            height: 280px;
+            background-color: #FFF;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .item-box .req-no{
+            border-radius: 5px;
+            background-color: skyblue;
+            height: 55px;
+            line-height: 55px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: "Consolas";
+            color: white;
+        }
+        .item-box-content .workflow-name{}
+
+        /*进度球*/
+        .button {
+          width: 100px;
+          height: 100px;
+          border: 1px solid #0D96F2;
+          position: relative;
+          border-radius: 50%;
+          overflow: hidden;
+          background: #0D96F2;
+          margin: 0 auto;
+        }
+        .button .status {
+          position: absolute;
+          width: 250%;
+          height: 250%;
+          top: -200%;
+          left: -70%;
+          border-radius: 40%;
+          background: white;
+          animation: wave 5s infinite;
+          /*animation-timing-function: cubic-bezie(.28,.93,.71,.38);*/
+        }
+        .button:hover .status {
+          transform: scale(1,1);
+        }
+        @keyframes wave {
+          from {
+            transform: rotate(0deg)
+          }
+          to {
+            transform: rotate(360deg)
+          }
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="head"></div>
+    <div class="body">
+        <div class="menu"></div>
+        <div class="content-wrapper">
+            <div class="head-title">开发回执</div>
+            <div class="search-wrapper">
+                <div class="form-control">
+                    <label for="month">开发月份：</label>
+                    <input name="month" type="text">
+                </div>
+                <div class="form-control">
+                    <label for="month">开发人员：</label>
+                    <input name="month" type="text">
+                </div>
+                <div class="form-control">
+                    <label for="month">作业名称：</label>
+                    <input name="month" type="text">
+                </div>
+                <div class="form-control">
+                    <label for="month">开发月份：</label>
+                    <input name="month" type="text">
+                </div>
+            </div>
+            <div class="main-wrapper">
+                <ul>
+                    <li class="item-box">
+                        <a>
+                            <div class="req-no">历史业绩</div>
+                            <div class="item-box-content">
+                                <div class="workflow-name">
+                                    <span class="title">编号：</span>
+                                    <span>2019064145</span>
+                                </div>
+                                <div class="engineer">
+                                    <span>开发人员：</span>
+                                    <span>陈龙</span>
+                                </div>
+                                <div class="button">
+                                    <div class="status"></div>
+                                </div>
+                                <div class="edit-button"><a href="">编辑</a></div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="item-box"></li>
+                    <li class="item-box"></li>
+                    <li class="item-box"></li>
+                    <li class="item-box"></li>
+                    <li class="item-box"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
